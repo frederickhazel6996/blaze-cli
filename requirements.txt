@@ -1,4 +1,4 @@
 typer[all]
 black
 requests
-bs4
+python-dotenv
