@@ -1,14 +1,21 @@
 import typer
 import requests
 from utils.functions import generateRandomStrings
+from utils.db import DBHandler
+from dotenv import dotenv_values
 
 app = typer.Typer()
 
+config = dotenv_values(".env")
+
 
 @app.command()
-def generateRanomString(templength: int):
-    print(templength)
+def generate(templength: int):
+    print(config)
+
     length = 5 if templength < 5 else templength
+    mongo = DBHandler()
+    print(mongo)
     print(generateRandomStrings(length))
 
 
