@@ -12,8 +12,8 @@ class Admin(BaseModel):
 
 class AddAdminModel(Admin):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
-    url: str = Field(...)
-    code: str = Field(...)
+    original_url: str = Field(...)
+    identifier: str = Field(...)
 
     class Config:
         allow_population_by_field_name = True
@@ -21,7 +21,7 @@ class AddAdminModel(Admin):
         json_encoders = {ObjectId: str}
         schema_extra = {
             "example": {
-                "url": "https://zoro.to/watch/naruto-shippuden-355?ep=8203",
-                "code": "xAdjedjNa",
+                "original_url": "https://zoro.to/watch/naruto-shippuden-355?ep=8203",
+                "identifier": "xAdjedjNa",
             }
         }

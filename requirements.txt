@@ -7,3 +7,4 @@ pymongo
 motor==2.3.0
 uuid
 pydantic
+validators
