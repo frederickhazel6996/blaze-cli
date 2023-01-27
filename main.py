@@ -1,5 +1,6 @@
 import typer
 import requests
+import os
 import validators
 from utils.functions import generateRandomStrings
 from utils.db import MongoHandler
@@ -8,13 +9,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = typer.Typer()
+BASE_URL = os.getenv("BASE_URL")
 
 
 @app.command()
-def shorten(url: str):
+def shortenurl(url: str):
 
     validation = validators.url(url)
-    print(validation)
     if validation is not True:
         print("URL is not valid")
         return
@@ -30,12 +31,20 @@ def shorten(url: str):
                 loop = False
                 tempUrlData = {"original_url": url, "identifier": tempIdentifier}
                 mongo.db["cliurls"].insert_one(tempUrlData)
-                print(f"Short URL is https://blazeurl.ly/{tempIdentifier}")
+                print(f"Short URL is {BASE_URL}{tempIdentifier}")
 
 
 @app.command()
-def openurl():
-    print("https://blazeurl.ly/sadsjh")
+def fetchurl(url: str):
+    validation = validators.url(url)
+    if validation is not True:
+        print("URL is not valid")
+        return
+    mongo = MongoHandler()
+    tempIdentifier = url[len(BASE_URL) :]
+    with mongo:
+        tempurl = mongo.db["cliurls"].find_one({"identifier": tempIdentifier})
+        print(tempurl["original_url"])
 
 
 if __name__ == "__main__":
